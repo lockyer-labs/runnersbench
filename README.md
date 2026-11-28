@@ -57,7 +57,7 @@ each provider runs its smallest Apple Silicon machine on macOS 26.
 | **Disk** | `fio` sequential read/write (1M), 4k random read/write IOPS, and 4k writes each followed by `fsync` (Linux only) |
 | **Network** | Download a 1 GB [release asset](https://github.com/lockyer-labs/runnersbench/releases/tag/download-test) from GitHub over 4 connections, for 10 s or the whole file, so sustained limits show rather than bursts |
 | **Cache** | Save and restore 1 GB of incompressible data with the stock `actions/cache`, so providers that speed it up show it |
-| **Docker build** | A [small React app](bench/docker) built with no cache, then rebuilt after a source edit in a second job on a fresh runner (Linux only). Layers are kept by each provider's own Docker caching where it has one (Blacksmith and FlameWill builders, Namespace remote builders, Groundbox's default builder, Avrea's cache), otherwise by the Actions cache (`type=gha`), which most providers serve from their own storage |
+| **Docker build** | A [small React app](bench/docker) built with no cache, then rebuilt after a source edit in a second job on a fresh runner (Linux only). Layers are kept by each provider's own Docker caching where it has one (Blacksmith and FlameWill builders, Depot and Namespace remote builders, Groundbox's default builder, Avrea's cache), otherwise by the Actions cache (`type=gha`), which most providers serve from their own storage |
 | **Redis build** | `make -j$(nproc)`, and its cost at list price with each provider's billing rounding |
 
 Plus the system details each runner reports: CPU model, memory, disk,
@@ -111,8 +111,9 @@ install its GitHub App on this repo's account, then add an entry to
   like Namespace's.
 - `price_per_minute` may be `null`; `enabled: false` parks a runner.
 - `docker_cache` picks a provider's own Docker layer caching (`blacksmith`,
-  `flamewill`, `namespace` or `groundbox`; the workflow has matching steps), and
-  `docker_cache_url` points `type=gha` at a provider's own cache server.
+  `depot`, `flamewill`, `namespace` or `groundbox`; the workflow has matching
+  steps), and `docker_cache_url` points `type=gha` at a provider's own cache
+  server. `depot_project` is the Depot project that holds the build cache.
 - The top-level `compliance` object holds each provider's SOC 2 and ISO 27001
   status as stated on its own site, with a `source` link.
 

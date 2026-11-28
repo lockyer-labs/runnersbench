@@ -168,6 +168,11 @@ jobs:
     name: docker cold ${{ matrix.label }} (${{ matrix.rep }})
     runs-on: ${{ matrix.label }}
     timeout-minutes: 15
+    # Depot authenticates with an OIDC token from GitHub.
+    permissions:
+      contents: read
+      actions: read
+      id-token: write
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.setup.outputs.docker) }}
@@ -196,6 +201,11 @@ jobs:
         uses: flamewill/setup-docker-builder@v1
         with:
           cache-key: ${{ env.DOCKER_SCOPE }}
+      - name: Set up Docker builder (Depot)
+        if: ${{ matrix.docker_cache == 'depot' }}
+        uses: depot/use-action@v1
+        with:
+          project: ${{ matrix.depot_project }}
       # Namespace runners already point Docker at Namespace's remote builders, and Groundbox keeps the
       # default builder's layers between jobs, so neither sets up a builder.
       - name: Cold build
@@ -212,6 +222,11 @@ jobs:
     name: docker cached ${{ matrix.label }} (${{ matrix.rep }})
     runs-on: ${{ matrix.label }}
     timeout-minutes: 15
+    # Depot authenticates with an OIDC token from GitHub.
+    permissions:
+      contents: read
+      actions: read
+      id-token: write
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.setup.outputs.docker) }}
@@ -240,6 +255,11 @@ jobs:
         uses: flamewill/setup-docker-builder@v1
         with:
           cache-key: ${{ env.DOCKER_SCOPE }}
+      - name: Set up Docker builder (Depot)
+        if: ${{ matrix.docker_cache == 'depot' }}
+        uses: depot/use-action@v1
+        with:
+          project: ${{ matrix.depot_project }}
       # Namespace runners already point Docker at Namespace's remote builders, and Groundbox keeps the
       # default builder's layers between jobs, so neither sets up a builder.
       - uses: actions/download-artifact@v8

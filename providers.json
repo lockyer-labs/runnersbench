@@ -58,6 +58,8 @@
       "price_per_minute": 0.012,
       "billing": {"increment_seconds": 1},
       "pricing_caveat": "Needs a plan: Developer is $20 a month with 2,000 minutes included.",
+      "docker_cache": "depot",
+      "depot_project": "j2fr3mzd6c",
       "enabled": true,
       "pricing_source": "https://depot.dev/docs/github-actions/runner-types"
     },
@@ -230,6 +232,8 @@
       "price_per_minute": 0.012,
       "billing": {"increment_seconds": 1},
       "pricing_caveat": "Needs a plan: Developer is $20 a month with 2,000 minutes included.",
+      "docker_cache": "depot",
+      "depot_project": "j2fr3mzd6c",
       "enabled": true,
       "pricing_source": "https://depot.dev/docs/github-actions/runner-types"
     },
